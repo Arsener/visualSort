@@ -15,7 +15,7 @@ public:
 
 signals:
     void returnHeights(int*);
-    void sortFinish();
+    void sortFinish(int);
 
 protected:
     void run();

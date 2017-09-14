@@ -29,7 +29,7 @@ private slots:
     void bubbleSort();
     void randomHeights();
     void deleteColumns();
-    void showFinish();
+    void showFinish(int sortType);
     void setSpeed(int speed);
 
 private:

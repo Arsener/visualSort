@@ -41,5 +41,5 @@ void BubbleThread::run()
         }
     }
 
-    emit sortFinish();
+    emit sortFinish(0);
 }

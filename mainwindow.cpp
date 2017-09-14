@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     bubbleThread = new BubbleThread();
     connect(ui->addButton, SIGNAL(clicked(bool)), this, SLOT(randomHeights()));
     connect(ui->bubbleButton, SIGNAL(clicked(bool)), this, SLOT(bubbleSort()));
-    connect(bubbleThread, SIGNAL(sortFinish()), this, SLOT(showFinish()));
+    connect(bubbleThread, SIGNAL(sortFinish(int)), this, SLOT(showFinish(int)));
     connect(ui->deleteButton, SIGNAL(clicked(bool)), this, SLOT(deleteColumns()));
     connect(bubbleThread, SIGNAL(returnHeights(int*)), this, SLOT(sortColumns(int*)));
     connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(setSpeed(int)));
@@ -117,7 +117,7 @@ void MainWindow::bubbleSort()
     bubbleThread->start();
 }
 
-void MainWindow::showFinish()
+void MainWindow::showFinish(int sortType)
 {
     for(int i = 0; i < number; i++)
     {
@@ -129,6 +129,18 @@ void MainWindow::showFinish()
     }
 
     sorting = false;
+
+    switch(sortType)
+    {
+    case 0:
+        bubbleThread->quit();
+        bubbleThread->wait();
+        break;
+    case 1:
+        break;
+    case 2:
+        break;
+    }
 }
 
 void MainWindow::setSpeed(int speed)

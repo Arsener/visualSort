@@ -18,12 +18,18 @@ MainWindow::MainWindow(QWidget *parent) :
     //设置滑动条控件的值
     ui->horizontalSlider->setValue(50);
     bubbleThread = new BubbleThread();
+    quickThread = new QuickThread();
     connect(ui->addButton, SIGNAL(clicked(bool)), this, SLOT(randomHeights()));
+    connect(ui->deleteButton, SIGNAL(clicked(bool)), this, SLOT(deleteColumns()));
+    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(setSpeed(int)));
+
     connect(ui->bubbleButton, SIGNAL(clicked(bool)), this, SLOT(bubbleSort()));
     connect(bubbleThread, SIGNAL(sortFinish(int)), this, SLOT(showFinish(int)));
-    connect(ui->deleteButton, SIGNAL(clicked(bool)), this, SLOT(deleteColumns()));
-    connect(bubbleThread, SIGNAL(returnHeights(int*)), this, SLOT(sortColumns(int*)));
-    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(setSpeed(int)));
+    connect(bubbleThread, SIGNAL(returnHeights(int, int, int*)), this, SLOT(sortColumns(int, int, int*)));
+
+    connect(ui->quickButton, SIGNAL(clicked(bool)), this, SLOT(quickSort()));
+    connect(quickThread, SIGNAL(sortFinish(int)), this, SLOT(showFinish(int)));
+    connect(quickThread, SIGNAL(returnHeights(int, int, int*)), this, SLOT(sortColumns(int, int, int*)));
 }
 
 MainWindow::~MainWindow()
@@ -48,6 +54,7 @@ void MainWindow::randomHeights()
         return;
     }
 
+    sorted = false;
     deleteColumns();
     number = ui->numberLineEdit->text().toInt();
     int already[HLAYOUTHEIGHT] = {0};
@@ -64,11 +71,6 @@ void MainWindow::randomHeights()
         already[height] = 1;
     }
 
-    addColumns();
-}
-
-void MainWindow::addColumns()
-{
     labels = new QLabel[number];
     for(int i = 0; i < number; i++)
     {
@@ -79,12 +81,10 @@ void MainWindow::addColumns()
     }
 }
 
-void MainWindow::sortColumns(int *newHeights)
+void MainWindow::sortColumns(int a, int b, int *newHeights)
 {
-    for(int i = 0; i < number; i++)
-    {
-        labels[i].setFixedHeight(newHeights[i]);
-    }
+    labels[a].setFixedHeight(newHeights[a]);
+    labels[b].setFixedHeight(newHeights[b]);
 }
 
 void MainWindow::deleteColumns()
@@ -106,6 +106,12 @@ void MainWindow::deleteColumns()
 
 void MainWindow::bubbleSort()
 {
+    if(sorted)
+    {
+        QMessageBox::warning(this, "Error!", "Please re-add the columns!");
+        return;
+    }
+
     if(sorting)
     {
         QMessageBox::warning(this, "Error!", "I'm sorting!");
@@ -117,15 +123,33 @@ void MainWindow::bubbleSort()
     bubbleThread->start();
 }
 
+void MainWindow::quickSort()
+{
+    if(sorted)
+    {
+        QMessageBox::warning(this, "Error!", "Please re-add the columns!");
+        return;
+    }
+
+    if(sorting)
+    {
+        QMessageBox::warning(this, "Error!", "I'm sorting!");
+        return;
+    }
+
+    sorting = true;
+    quickThread->setAttr(number, heights);
+    quickThread->start();
+}
+
 void MainWindow::showFinish(int sortType)
 {
     for(int i = 0; i < number; i++)
     {
         labels[i].setStyleSheet("background-color:red");
         QEventLoop eventloop;
-        QTimer::singleShot(50, &eventloop, SLOT(quit()));
+        QTimer::singleShot(10, &eventloop, SLOT(quit()));
         eventloop.exec();
-        labels[i].setStyleSheet("background-color:grey");
     }
 
     sorting = false;
@@ -137,10 +161,13 @@ void MainWindow::showFinish(int sortType)
         bubbleThread->wait();
         break;
     case 1:
+        quickThread->quit();
+        quickThread->wait();
         break;
     case 2:
         break;
     }
+    sorted = true;
 }
 
 void MainWindow::setSpeed(int speed)

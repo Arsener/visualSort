@@ -1,17 +1,18 @@
-#ifndef MYTHREAD_H
-#define MYTHREAD_H
+#ifndef QUICKTHREAD_H
+#define QUICKTHREAD_H
 
 #include <QThread>
 
-class BubbleThread : public QThread
+class QuickThread : public QThread
 {
     Q_OBJECT
 
 public:
-    BubbleThread();
-    ~BubbleThread();
+    QuickThread();
+    ~QuickThread();
     void setAttr(int number, int *heights);
     void setSpeed(int speed);
+    void quickSort(int left, int right);
 
 signals:
     void returnHeights(int, int, int*);
@@ -26,4 +27,4 @@ private:
     int *heights;
 };
 
-#endif // MYTHREAD_H
+#endif // QUICKTHREAD_H

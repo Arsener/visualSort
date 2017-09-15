@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "bubblethread.h"
+#include "quickthread.h"
 #include <QTime>
 #include <QTimer>
 #include <QLabel>
@@ -24,8 +25,8 @@ public:
     ~MainWindow();
 
 private slots:
-    void addColumns();
-    void sortColumns(int* heights);
+    void sortColumns(int a, int b, int* heights);
+    void quickSort();
     void bubbleSort();
     void randomHeights();
     void deleteColumns();
@@ -37,8 +38,10 @@ private:
     int number = 0;
     int *heights;
     bool sorting = false;
+    bool sorted = false;
     QLabel *labels;
     BubbleThread *bubbleThread;
+    QuickThread *quickThread;
 };
 
 #endif // MAINWINDOW_H

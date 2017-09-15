@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    bubblethread.cpp
+    bubblethread.cpp \
+    quickthread.cpp
 
 HEADERS += \
         mainwindow.h \
-    bubblethread.h
+    bubblethread.h \
+    quickthread.h
 
 FORMS += \
         mainwindow.ui

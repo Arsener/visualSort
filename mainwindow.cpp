@@ -57,18 +57,21 @@ void MainWindow::randomHeights()
     sorted = false;
     deleteColumns();
     number = ui->numberLineEdit->text().toInt();
-    int already[HLAYOUTHEIGHT] = {0};
     heights = new int[number];
+    int dif = 300 / number;
+    heights[0] = dif;
 
-    for(int i = 0; i < number; i++)
+    for(int i = 1; i < number; i++)
     {
-        int height = qrand()%HLAYOUTHEIGHT;
-        while(already[height])
-        {
-            height = qrand()%HLAYOUTHEIGHT;
-        }
-        heights[i] = height;
-        already[height] = 1;
+        heights[i] = heights[i - 1] + dif;
+    }
+
+    for(int j = 0; j < number; j++)
+    {
+       int r = j + qrand() % (number - j);
+       int temp = heights[j];
+       heights[j] = heights[r];
+       heights[r] = temp;
     }
 
     labels = new QLabel[number];

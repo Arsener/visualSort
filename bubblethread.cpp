@@ -34,10 +34,10 @@ void BubbleThread::run()
                 int tmp = heights[j];
                 heights[j] = heights[j + 1];
                 heights[j + 1] = tmp;
-            }
 
-            emit returnHeights(j, j+1, heights);
-            msleep(speed);
+                emit returnHeights(j, j+1, heights);
+                msleep(speed);
+            }
         }
     }
 

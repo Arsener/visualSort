@@ -10,7 +10,7 @@ class BubbleThread : public QThread
 public:
     BubbleThread();
     ~BubbleThread();
-    void setAttr(int number, int *heights);
+    void setAttr(int number, int *heights, int speed);
     void setSpeed(int speed);
 
 signals:

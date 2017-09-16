@@ -10,7 +10,7 @@ class HeapThread : public QThread
 public:
     HeapThread();
     ~HeapThread();
-    void setAttr(int number, int *heights);
+    void setAttr(int number, int *heights, int speed);
     void setSpeed(int speed);
     void heapAdjust(int parent, int length);
     void heapSort();

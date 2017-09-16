@@ -47,9 +47,21 @@ MainWindow::~MainWindow()
 
 void MainWindow::randomHeights()
 {
+    if(ui->numberLineEdit->text() == "")
+    {
+        QMessageBox::warning(this, "Error!", "Please input the number!");
+        return;
+    }
+
     if(ui->numberLineEdit->text().toInt() > 300)
     {
         QMessageBox::warning(this, "Error!", "The number can't be larger than 300!");
+        return;
+    }
+
+    if(ui->numberLineEdit->text().toInt() == 0)
+    {
+        QMessageBox::warning(this, "Error!", "The number must be larger than 0!");
         return;
     }
 
@@ -127,7 +139,7 @@ void MainWindow::bubbleSort()
     }
 
     bubbleSorting = true;
-    bubbleThread->setAttr(number, heights);
+    bubbleThread->setAttr(number, heights, speed);
     bubbleThread->start();
 }
 
@@ -146,7 +158,7 @@ void MainWindow::quickSort()
     }
 
     quickSorting = true;
-    quickThread->setAttr(number, heights);
+    quickThread->setAttr(number, heights, speed);
     quickThread->start();
 }
 
@@ -165,7 +177,7 @@ void MainWindow::heapSort()
     }
 
     heapSorting = true;
-    heapThread->setAttr(number, heights);
+    heapThread->setAttr(number, heights, speed);
     heapThread->start();
 }
 
@@ -208,4 +220,6 @@ void MainWindow::setSpeed(int speed)
         quickThread->setSpeed(speed);
     else if(heapSorting)
         heapThread->setSpeed(speed);
+
+    this->speed = speed;
 }

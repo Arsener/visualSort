@@ -38,6 +38,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     int number = 0;
+    int speed = 50;
     int *heights;
     bool bubbleSorting = false;
     bool quickSorting = false;

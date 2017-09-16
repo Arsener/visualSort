@@ -2,7 +2,7 @@
 
 QuickThread::QuickThread()
 {
-    speed = 50;
+
 }
 
 
@@ -11,11 +11,11 @@ QuickThread::~QuickThread()
     delete [] heights;
 }
 
-void QuickThread::setAttr(int number, int *heights)
+void QuickThread::setAttr(int number, int *heights, int speed)
 {
-
     this->number = number;
     this->heights = heights;
+    this->speed = speed;
 }
 
 void QuickThread::setSpeed(int speed)

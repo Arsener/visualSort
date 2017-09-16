@@ -2,7 +2,7 @@
 
 BubbleThread::BubbleThread()
 {
-    speed = 50;
+
 }
 
 
@@ -11,11 +11,11 @@ BubbleThread::~BubbleThread()
     delete [] heights;
 }
 
-void BubbleThread::setAttr(int number, int *heights)
+void BubbleThread::setAttr(int number, int *heights, int speed)
 {
-
     this->number = number;
     this->heights = heights;
+    this->speed = speed;
 }
 
 void BubbleThread::setSpeed(int speed)

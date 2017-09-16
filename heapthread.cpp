@@ -2,7 +2,7 @@
 
 HeapThread::HeapThread()
 {
-    speed = 50;
+
 }
 
 
@@ -11,11 +11,11 @@ HeapThread::~HeapThread()
     delete [] heights;
 }
 
-void HeapThread::setAttr(int number, int *heights)
+void HeapThread::setAttr(int number, int *heights, int speed)
 {
-
     this->number = number;
     this->heights = heights;
+    this->speed = speed;
 }
 
 void HeapThread::setSpeed(int speed)

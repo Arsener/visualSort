@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "heapthread.h"
 #include "bubblethread.h"
 #include "quickthread.h"
 #include <QTime>
@@ -28,6 +29,7 @@ private slots:
     void sortColumns(int a, int b, int* heights);
     void quickSort();
     void bubbleSort();
+    void heapSort();
     void randomHeights();
     void deleteColumns();
     void showFinish(int sortType);
@@ -37,11 +39,14 @@ private:
     Ui::MainWindow *ui;
     int number = 0;
     int *heights;
-    bool sorting = false;
+    bool bubbleSorting = false;
+    bool quickSorting = false;
+    bool heapSorting = false;
     bool sorted = false;
     QLabel *labels;
     BubbleThread *bubbleThread;
     QuickThread *quickThread;
+    HeapThread *heapThread;
 };
 
 #endif // MAINWINDOW_H

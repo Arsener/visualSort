@@ -27,12 +27,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     bubblethread.cpp \
-    quickthread.cpp
+    quickthread.cpp \
+    heapthread.cpp
 
 HEADERS += \
         mainwindow.h \
     bubblethread.h \
-    quickthread.h
+    quickthread.h \
+    heapthread.h
 
 FORMS += \
         mainwindow.ui

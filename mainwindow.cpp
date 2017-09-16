@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->horizontalSlider->setValue(50);
     bubbleThread = new BubbleThread();
     quickThread = new QuickThread();
+    heapThread = new HeapThread();
     connect(ui->addButton, SIGNAL(clicked(bool)), this, SLOT(randomHeights()));
     connect(ui->deleteButton, SIGNAL(clicked(bool)), this, SLOT(deleteColumns()));
     connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(setSpeed(int)));
@@ -30,6 +31,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->quickButton, SIGNAL(clicked(bool)), this, SLOT(quickSort()));
     connect(quickThread, SIGNAL(sortFinish(int)), this, SLOT(showFinish(int)));
     connect(quickThread, SIGNAL(returnHeights(int, int, int*)), this, SLOT(sortColumns(int, int, int*)));
+
+    connect(ui->heapButton, SIGNAL(clicked(bool)), this, SLOT(heapSort()));
+    connect(heapThread, SIGNAL(sortFinish(int)), this, SLOT(showFinish(int)));
+    connect(heapThread, SIGNAL(returnHeights(int, int, int*)), this, SLOT(sortColumns(int, int, int*)));
 }
 
 MainWindow::~MainWindow()
@@ -48,7 +53,7 @@ void MainWindow::randomHeights()
         return;
     }
 
-    if(sorting)
+    if(bubbleSorting || quickSorting || heapSorting)
     {
         QMessageBox::warning(this, "Error!", "I'm sorting!");
         return;
@@ -92,7 +97,7 @@ void MainWindow::sortColumns(int a, int b, int *newHeights)
 
 void MainWindow::deleteColumns()
 {
-    if(sorting)
+    if(bubbleSorting || quickSorting || heapSorting)
     {
         QMessageBox::warning(this, "Error!", "I'm sorting!");
         return;
@@ -115,13 +120,13 @@ void MainWindow::bubbleSort()
         return;
     }
 
-    if(sorting)
+    if(bubbleSorting || quickSorting || heapSorting)
     {
         QMessageBox::warning(this, "Error!", "I'm sorting!");
         return;
     }
 
-    sorting = true;
+    bubbleSorting = true;
     bubbleThread->setAttr(number, heights);
     bubbleThread->start();
 }
@@ -134,15 +139,34 @@ void MainWindow::quickSort()
         return;
     }
 
-    if(sorting)
+    if(bubbleSorting || quickSorting || heapSorting)
     {
         QMessageBox::warning(this, "Error!", "I'm sorting!");
         return;
     }
 
-    sorting = true;
+    quickSorting = true;
     quickThread->setAttr(number, heights);
     quickThread->start();
+}
+
+void MainWindow::heapSort()
+{
+    if(sorted)
+    {
+        QMessageBox::warning(this, "Error!", "Please re-add the columns!");
+        return;
+    }
+
+    if(bubbleSorting || quickSorting || heapSorting)
+    {
+        QMessageBox::warning(this, "Error!", "I'm sorting!");
+        return;
+    }
+
+    heapSorting = true;
+    heapThread->setAttr(number, heights);
+    heapThread->start();
 }
 
 void MainWindow::showFinish(int sortType)
@@ -155,19 +179,22 @@ void MainWindow::showFinish(int sortType)
         eventloop.exec();
     }
 
-    sorting = false;
-
     switch(sortType)
     {
     case 0:
         bubbleThread->quit();
         bubbleThread->wait();
+        bubbleSorting = false;
         break;
     case 1:
         quickThread->quit();
         quickThread->wait();
+        quickSorting = false;
         break;
     case 2:
+        heapThread->quit();
+        heapThread->wait();
+        heapSorting = false;
         break;
     }
     sorted = true;
@@ -175,5 +202,10 @@ void MainWindow::showFinish(int sortType)
 
 void MainWindow::setSpeed(int speed)
 {
-    bubbleThread->setSpeed(speed);
+    if(bubbleSorting)
+        bubbleThread->setSpeed(speed);
+    else if(quickSorting)
+        quickThread->setSpeed(speed);
+    else if(heapSorting)
+        heapThread->setSpeed(speed);
 }

@@ -25,13 +25,17 @@ void QuickThread::setSpeed(int speed)
 
 void QuickThread::run()
 {
+    //调用快速排序的函数
     quickSort(0, number - 1);
 
+    //排序结束，发送结束的信号
     emit sortFinish(1);
 }
 
+//快速排序
 void QuickThread::quickSort(int left, int right)
 {
+    //递归返回条件
     if(left >= right)
     {
         return;
@@ -74,6 +78,7 @@ void QuickThread::quickSort(int left, int right)
 
     }
 
+    //递归调用次函数，依次排序左右两侧的数组
     quickSort(left, k - 1);
     quickSort(k + 1, right);
 }

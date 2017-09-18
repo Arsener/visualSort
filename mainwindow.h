@@ -26,28 +26,28 @@ public:
     ~MainWindow();
 
 private slots:
-    void sortColumns(int a, int b, int* heights);
+    void heapSort();
     void quickSort();
     void bubbleSort();
-    void heapSort();
     void randomHeights();
     void deleteColumns();
-    void showFinish(int sortType);
     void setSpeed(int speed);
+    void showFinish(int sortType);
+    void sortColumns(int a, int b, int* heights);
 
 private:
     Ui::MainWindow *ui;
     int number = 0;
     int speed = 50;
     int *heights;
-    bool bubbleSorting = false;
-    bool quickSorting = false;
-    bool heapSorting = false;
     bool sorted = false;
+    bool heapSorting = false;
+    bool quickSorting = false;
+    bool bubbleSorting = false;
     QLabel *labels;
-    BubbleThread *bubbleThread;
-    QuickThread *quickThread;
     HeapThread *heapThread;
+    QuickThread *quickThread;
+    BubbleThread *bubbleThread;
 };
 
 #endif // MAINWINDOW_H

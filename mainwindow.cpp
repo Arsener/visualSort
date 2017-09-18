@@ -80,7 +80,9 @@ void MainWindow::randomHeights()
     //把之前的“柱子”全部删除
     deleteColumns();
     number = ui->numberLineEdit->text().toInt();
+
     heights = new int[number];
+    //设置排序后高度差均等
     int dif = 300 / number;
     heights[0] = dif;
 
@@ -89,6 +91,7 @@ void MainWindow::randomHeights()
         heights[i] = heights[i - 1] + dif;
     }
 
+    //打乱有序数组的顺序
     for(int j = 0; j < number; j++)
     {
        int r = j + qrand() % (number - j);
@@ -97,6 +100,7 @@ void MainWindow::randomHeights()
        heights[r] = temp;
     }
 
+    //设置“柱子”的样式并依次加入到布局中
     labels = new QLabel[number];
     for(int i = 0; i < number; i++)
     {
@@ -107,12 +111,14 @@ void MainWindow::randomHeights()
     }
 }
 
+//更新一次交换结果的函数，接受线程发来的信号
 void MainWindow::sortColumns(int a, int b, int *newHeights)
 {
     labels[a].setFixedHeight(newHeights[a]);
     labels[b].setFixedHeight(newHeights[b]);
 }
 
+//删除layout中的标签
 void MainWindow::deleteColumns()
 {
     if(bubbleSorting || quickSorting || heapSorting)
@@ -130,6 +136,7 @@ void MainWindow::deleteColumns()
     number = 0;
 }
 
+//开启冒泡排序的线程
 void MainWindow::bubbleSort()
 {
     if(sorted)
@@ -149,6 +156,7 @@ void MainWindow::bubbleSort()
     bubbleThread->start();
 }
 
+//开启快速排序的线程
 void MainWindow::quickSort()
 {
     if(sorted)
@@ -168,6 +176,7 @@ void MainWindow::quickSort()
     quickThread->start();
 }
 
+//开启堆排序的线程
 void MainWindow::heapSort()
 {
     if(sorted)
@@ -187,6 +196,7 @@ void MainWindow::heapSort()
     heapThread->start();
 }
 
+//展示排序结果
 void MainWindow::showFinish(int sortType)
 {
     for(int i = 0; i < number; i++)
@@ -197,6 +207,7 @@ void MainWindow::showFinish(int sortType)
         eventloop.exec();
     }
 
+    //休眠当前线程
     switch(sortType)
     {
     case 0:
@@ -218,6 +229,7 @@ void MainWindow::showFinish(int sortType)
     sorted = true;
 }
 
+//设置排序速度
 void MainWindow::setSpeed(int speed)
 {
     if(bubbleSorting)

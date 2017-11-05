@@ -52,7 +52,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Add</string>
+     <string>添加</string>
     </property>
    </widget>
    <widget class="QPushButton" name="deleteButton">
@@ -70,7 +70,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Delete</string>
+     <string>清除</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="numberLineEdit">
@@ -106,7 +106,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Bubble Sort</string>
+     <string>冒泡排序</string>
     </property>
    </widget>
    <widget class="QSlider" name="horizontalSlider">
@@ -169,7 +169,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Heap Sort</string>
+     <string>堆排序</string>
     </property>
    </widget>
    <widget class="QPushButton" name="quickButton">
@@ -187,7 +187,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Quick Sort</string>
+     <string>快速排序</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">

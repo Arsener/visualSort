@@ -23,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
     heapThread = new HeapThread();
     quickThread = new QuickThread();
     bubbleThread = new BubbleThread();
+
+    //设置不同的信号槽
     connect(ui->addButton, SIGNAL(clicked(bool)), this, SLOT(randomHeights()));
     connect(ui->deleteButton, SIGNAL(clicked(bool)), this, SLOT(deleteColumns()));
     connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(setSpeed(int)));
@@ -51,6 +53,7 @@ MainWindow::~MainWindow()
 //添加若干高度不同的“柱子”
 void MainWindow::randomHeights()
 {
+    //处理异常输入，最大输入值为300，最小为1
     if(ui->numberLineEdit->text() == "")
     {
         QMessageBox::warning(this, "Error!", "Please input the number!");
@@ -121,6 +124,7 @@ void MainWindow::sortColumns(int a, int b, int *newHeights)
 //删除layout中的标签
 void MainWindow::deleteColumns()
 {
+    //排序期间不能删除
     if(bubbleSorting || quickSorting || heapSorting)
     {
         QMessageBox::warning(this, "Error!", "I'm sorting!");
@@ -139,12 +143,14 @@ void MainWindow::deleteColumns()
 //开启冒泡排序的线程
 void MainWindow::bubbleSort()
 {
+    //如果当前是排序结束的状态需要重新添加
     if(sorted)
     {
         QMessageBox::warning(this, "Error!", "Please re-add the columns!");
         return;
     }
 
+    //排序期间不能开启排序
     if(bubbleSorting || quickSorting || heapSorting)
     {
         QMessageBox::warning(this, "Error!", "I'm sorting!");
@@ -159,12 +165,14 @@ void MainWindow::bubbleSort()
 //开启快速排序的线程
 void MainWindow::quickSort()
 {
+    //如果当前是排序结束的状态需要重新添加
     if(sorted)
     {
         QMessageBox::warning(this, "Error!", "Please re-add the columns!");
         return;
     }
 
+    //排序期间不能开启排序
     if(bubbleSorting || quickSorting || heapSorting)
     {
         QMessageBox::warning(this, "Error!", "I'm sorting!");
@@ -179,12 +187,14 @@ void MainWindow::quickSort()
 //开启堆排序的线程
 void MainWindow::heapSort()
 {
+    //如果当前是排序结束的状态需要重新添加
     if(sorted)
     {
         QMessageBox::warning(this, "Error!", "Please re-add the columns!");
         return;
     }
 
+    //排序期间不能开启排序
     if(bubbleSorting || quickSorting || heapSorting)
     {
         QMessageBox::warning(this, "Error!", "I'm sorting!");
@@ -199,6 +209,7 @@ void MainWindow::heapSort()
 //展示排序结果
 void MainWindow::showFinish(int sortType)
 {
+    //动画效果
     for(int i = 0; i < number; i++)
     {
         labels[i].setStyleSheet("background-color:red");
